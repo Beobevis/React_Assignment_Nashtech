@@ -60,7 +60,7 @@ const App = () => {
                 <Nav.Link href={PATHS.PROFILE}>ProfilePage</Nav.Link>
                 
                 {localStorage.getItem("token") == null && (
-                  <Nav.Link to="/login">Login</Nav.Link>
+                  <Nav.Link href={PATHS.LOGIN}>Login</Nav.Link>
                 )}
                 {localStorage.getItem("token")  && (
                   <Button toggle={handleLogOut}>LogOut</Button>
