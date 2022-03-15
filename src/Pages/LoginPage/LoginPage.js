@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import ReactDOM from 'react-dom';
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 //import { Form } from "react-bootstrap";
@@ -9,7 +9,6 @@ import { loginService } from "../../Services/Service";
 
 const validateEmail = (email) => {
   if (!email) return "Required";
-  if (email.length < 8) return "At least 8 characters required";
   const isValidEmail = String(email)
     .toLowerCase()
     .match(
@@ -20,40 +19,38 @@ const validateEmail = (email) => {
 };
 const validatePassword = (password) => {
   if (!password) return "Required";
-  if (password.length < 8) return "At least 8 characters required";
+  if (password.length <= 8) return "At least 8 characters required";
 };
-
 const LoginPage = () => {
   const [value, setValue] = useState({
     email: "",
     password: "",
+    
   });
-  const [checked, setChecked] = useState({ checked: false });
-
+  const [checked,setChecked] = useState({checked: false});
   const [touched, setTouched] = useState({
     email: false,
     password: false,
   });
-
   const errors = {
     email: validateEmail(value.email),
     password: validatePassword(value.password),
   };
   console.log(errors);
-
   const handleInputChange = (evt) => {
     setValue({
       ...value,
       [evt.target.name]: evt.target.value,
     });
   };
-  const isFormValid = errors.email || errors.password;
-
+  const isFormValid =
+    errors.email || errors.password || checked.checked === false;
   const handleSubmit = (evt) => {
-      console.log(value);
-      evt.preventDefault();
+    evt.preventDefault();
+    console.log("values: ", value);
   };
-  onSubmit : () => {
+
+  ReactDOM.onSubmit = () => {
     loginService().then((response) => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userID", response.data.userId);
@@ -67,10 +64,9 @@ const LoginPage = () => {
       [evt.target.name]: true,
     });
   };
-
   const handleCheckedChange = (evt) => {
     setChecked({
-      ...checked,
+        ...checked,
       [evt.target.name]: evt.target.checked,
     });
   };
@@ -114,7 +110,7 @@ const LoginPage = () => {
               name="checked"
               checked={value.checked}
               type="checkbox"
-              label="Remember Me"
+              label="I have read agreement"
               id="checked"
             />
           </Form.Group>
@@ -128,6 +124,7 @@ const LoginPage = () => {
           </Button>
         </Form>
       </div>
+      
     </div>
   );
 };

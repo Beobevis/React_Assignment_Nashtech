@@ -17,7 +17,7 @@ const ProfilePage = () => {
       {localStorage.getItem("token") === null ? (
         <div>
           <h3>You need to login to Continue</h3>
-          <LoginPage />
+          <LoginPage/>
         </div>
       ) : (
         <div>
